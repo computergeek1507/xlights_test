@@ -11,11 +11,8 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
   late  TextEditingController iptc = TextEditingController();
-   late TextEditingController porttc = TextEditingController();
-  //String ipAddress = "127.0.0.1";
-  //String port = "49913";
+  late TextEditingController porttc = TextEditingController();
 
   @override
   void initState() {
@@ -28,8 +25,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       iptc = TextEditingController(text: prefs.getString('ip') ?? "127.0.0.1");
       porttc = TextEditingController(text: prefs.getString('port') ?? "49913");
-      //iptc.text = prefs.getString('ip') ?? "127.0.0.1";
-      //porttc.text = prefs.getString('port') ?? "49913";
     });
   }
 
@@ -69,13 +64,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20),
-
-       /*      TextFormField(
-          controller: iptc,
-        ),
-        TextFormField(
-          controller: porttc,
-        ),*/
             TextField(
               decoration: InputDecoration(
                 labelText: 'IP',
@@ -83,7 +71,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               style: TextStyle(fontSize: 28),
               controller: iptc,
-              //onChanged: (val) => setState(() => ipAddress = val),
             ),
             SizedBox(height: 20),
             TextField(
@@ -93,7 +80,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               style: TextStyle(fontSize: 28),
               controller: porttc,
-              //onChanged: (val) => setState(() => port = val),
             ),
           ],
         ),

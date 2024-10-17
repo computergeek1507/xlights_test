@@ -37,7 +37,7 @@ class _StartScreenState extends State<StartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('xLights Test'),
+        title: const Text('xLights Remote'),
  automaticallyImplyLeading: false,
           actions: [
             IconButton(
@@ -69,7 +69,7 @@ class _StartScreenState extends State<StartScreen> {
                   if (versionSnapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
                   } else if (versionSnapshot.hasData) {
-                    return buildScreen(controllers, versionSnapshot.data!, offline, tooOld);
+                    return buildScreen(controllers, versionSnapshot.data!, tooOld);
                   } else {
                     return const Text("Failed to get xLights version");
                   }
@@ -86,7 +86,7 @@ class _StartScreenState extends State<StartScreen> {
   }
 
 
-    Widget buildScreen(String showFolder, String xLightsVersion, bool offline, bool tooOld) {
+    Widget buildScreen(String showFolder, String xLightsVersion, bool tooOld) {
     
     return 
  Container(
@@ -94,10 +94,10 @@ class _StartScreenState extends State<StartScreen> {
           color: Color(0xFFE8EAF6),
           child: Column(
             children: [
-              _buildButton('Controllers', offline, () => Navigator.pushNamed(context, '/controllers')),
-              _buildButton('Models', offline, () => Navigator.pushNamed(context, '/models')),
-              if (offline)
-                Text('Failed to Connect to xLights, Check IP Address Settings', style: TextStyle(color: Colors.red)),
+              _buildButton('Controllers', () => Navigator.pushNamed(context, '/controllers')),
+              _buildButton('Models', () => Navigator.pushNamed(context, '/models')),
+              //if (offline)
+              //  Text('Failed to Connect to xLights, Check IP Address Settings', style: TextStyle(color: Colors.red)),
               if (tooOld)
                 Text('Please Update xLights to 2023.06 to use this App', style: TextStyle(color: Colors.red)),
               Text('Show Folder: $showFolder'),
@@ -108,7 +108,7 @@ class _StartScreenState extends State<StartScreen> {
     );
   }
 
-  Widget _buildButton(String text, bool disabled, VoidCallback onPressed) {
+  Widget _buildButton(String text, VoidCallback onPressed) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: ElevatedButton(
@@ -117,7 +117,7 @@ class _StartScreenState extends State<StartScreen> {
           padding: EdgeInsets.all(10),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
         ),
-        onPressed: disabled ? null : onPressed,
+        onPressed:  onPressed,
         child: Text(
           text,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

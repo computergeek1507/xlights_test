@@ -8,7 +8,8 @@ import 'package:xlights_test/settings.dart';
 void main() {
   runApp(
     MaterialApp(
-      title: 'xLights Test',
+      title: 'xLights Remote',
+      debugShowCheckedModeBanner: false,
       // Start the app with the "/" named route. In this case, the app starts
       // on the FirstScreen widget.
       initialRoute: '/',
