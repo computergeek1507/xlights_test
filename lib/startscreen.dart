@@ -19,13 +19,25 @@ class StartScreen extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: ElevatedButton(
-          // Within the `FirstScreen` widget
-          onPressed: () {
-            // Navigate to the second screen using a named route.
-            Navigator.pushNamed(context, '/controllers');
-          },
-          child: const Text('Controllers'),
+        child: Column(
+          children: [
+            ElevatedButton(
+              // Within the `FirstScreen` widget
+              onPressed: () {
+                // Navigate to the second screen using a named route.
+                Navigator.pushNamed(context, '/controllers');
+              },
+              child: const Text('Controllers'),
+            ),
+            ElevatedButton(
+              // Within the `FirstScreen` widget
+              onPressed: () {
+                // Navigate to the second screen using a named route.
+                Navigator.pushNamed(context, '/models');
+              },
+              child: const Text('Models'),
+            ),
+          ],
         ),
       ),
     );

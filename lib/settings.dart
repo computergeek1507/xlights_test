@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -23,5 +23,10 @@ class SettingsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+    Future<void> storeData(String key, String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(key, value);
   }
 }
