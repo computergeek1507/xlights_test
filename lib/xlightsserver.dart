@@ -11,8 +11,8 @@ import 'package:xlights_test/controllerports.dart';
 
 Future<String> getBaseUrl() async {
     final prefs = await SharedPreferences.getInstance();
-    final ip = prefs.getString('@ip') ?? '127.0.0.1';
-    final port = prefs.getString('@port') ?? '49913';
+    final ip = prefs.getString('ip') ?? '127.0.0.1';
+    final port = prefs.getString('port') ?? '49913';
     var url = 'http://$ip:$port';
     return url;
   }
@@ -88,24 +88,28 @@ Future<Map<String, dynamic>> getModel(String? name) async {
   }
 }
 
-Future<String> getVersion(String? address) async {
+Future<String> getVersion() async {
   final baseurl = await getBaseUrl();
   final fullURL = '$baseurl/getVersion';
-
-  final response = await dio.get(fullURL);
-  print(response.data);
+  try {
+    final response = await dio.get(fullURL);
+    //print(response.data);
     if (response.statusCode == 200) {
- return response.data;
-      }else{throw Exception('Failed to load Controller');}
- //return false;
+      return response.data;
+    } else {
+      throw Exception('Failed to load version');
+    }
+  } catch (e) {
+    return '';
+  }
 }
 
-Future<String> getShowFolder(String? address) async {
+Future<String> getShowFolder() async {
   final baseurl = await getBaseUrl();
   final fullURL = '$baseurl/getShowFolder';
 
   final response = await dio.get(fullURL);
-  print(response.data);
+  //print(response.data);
     if (response.statusCode == 200) {
  return response.data;
       }else{throw Exception('Failed to load Controller');}
