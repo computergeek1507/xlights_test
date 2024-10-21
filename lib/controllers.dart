@@ -18,7 +18,6 @@ class _ControllersScreenState extends State<ControllersScreen> {
     super.initState();
     controllerList = getControllers();
   }
-
   
   @override
   Widget build(BuildContext context) {
@@ -55,15 +54,12 @@ class _ControllersScreenState extends State<ControllersScreen> {
       itemCount: controllers.length,
       itemBuilder: (context, index) {
         final controller = controllers[index];
-        String itemTitle = "${controller.name!}";
+        String itemTitle = controller.name!;
         String itemsubTitle = "${controller.address!} ${controller.vendor!} ${controller.model!} Active: ${controller.active!}";
         return ListTile(
         title: Text(itemTitle),
         subtitle: Text(itemsubTitle),
         onTap: () {
-
-          //var snackBar = SnackBar(content: Text("Tapped on $itemTitle"));
-          //ScaffoldMessenger.of(context).showSnackBar(snackBar);
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => ControllerInfoScreen( controller: controller,)));
         },
@@ -73,4 +69,6 @@ class _ControllersScreenState extends State<ControllersScreen> {
       separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
+
+  
 }

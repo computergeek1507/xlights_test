@@ -177,7 +177,7 @@ await Printing.layoutPdf(onLayout: (_) => newpdf.save());
         if (port.models != null)
           ...?port.models?.map((model) => Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 4.0),
-            child: Text('${model.name} ${String.fromCharCode(int.parse(model.smartremote!))}'),
+            child: Text('${model.name} ${model.smartremote ==null? '' : 'SR:' + String.fromCharCode(int.parse(model.smartremote!))}'),
           )),
         Divider(),
       ],

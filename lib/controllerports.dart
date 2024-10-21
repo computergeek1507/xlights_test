@@ -14,25 +14,25 @@ class ControllerPorts {
     if (json['pixelports'] != null) {
       pixelports = <Port>[];
       json['pixelports'].forEach((v) {
-        pixelports!.add(new Port.fromJson(v));
+        pixelports!.add(Port.fromJson(v));
       });
     }
     if (json['serialports'] != null) {
       serialports = <Port>[];
       json['serialports'].forEach((v) {
-        serialports!.add(new Port.fromJson(v));
+        serialports!.add(Port.fromJson(v));
       });
     }
     if (json['virtualmatrixports'] != null) {
       virtualmatrixports = <Port>[];
       json['virtualmatrixports'].forEach((v) {
-        virtualmatrixports!.add(new Port.fromJson(v));
+        virtualmatrixports!.add(Port.fromJson(v));
       });
     }
     if (json['ledpanelmatrixports'] != null) {
       ledpanelmatrixports = <Port>[];
       json['ledpanelmatrixports'].forEach((v) {
-        ledpanelmatrixports!.add(new Port.fromJson(v));
+        ledpanelmatrixports!.add(Port.fromJson(v));
       });
     }
   }
@@ -40,18 +40,18 @@ class ControllerPorts {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.pixelports != null) {
-      data['pixelports'] = this.pixelports!.map((v) => v.toJson()).toList();
+      data['pixelports'] = pixelports!.map((v) => v.toJson()).toList();
     }
     if (this.serialports != null) {
-      data['serialports'] = this.serialports!.map((v) => v.toJson()).toList();
+      data['serialports'] = serialports!.map((v) => v.toJson()).toList();
     }
     if (this.virtualmatrixports != null) {
       data['virtualmatrixports'] =
-          this.virtualmatrixports!.map((v) => v.toJson()).toList();
+          virtualmatrixports!.map((v) => v.toJson()).toList();
     }
     if (this.ledpanelmatrixports != null) {
       data['ledpanelmatrixports'] =
-          this.ledpanelmatrixports!.map((v) => v.toJson()).toList();
+          ledpanelmatrixports!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -85,21 +85,21 @@ class Port {
     if (json['models'] != null) {
       models = <Models>[];
       json['models'].forEach((v) {
-        models!.add(new Models.fromJson(v));
+        models!.add(Models.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['port'] = this.port;
-    data['startchannel'] = this.startchannel;
-    data['universe'] = this.universe;
-    data['universestartchannel'] = this.universestartchannel;
-    data['channels'] = this.channels;
-    data['pixels'] = this.pixels;
-    if (this.models != null) {
-      data['models'] = this.models!.map((v) => v.toJson()).toList();
+    data['port'] = port;
+    data['startchannel'] = startchannel;
+    data['universe'] = universe;
+    data['universestartchannel'] = universestartchannel;
+    data['channels'] = channels;
+    data['pixels'] = pixels;
+    if (models != null) {
+      data['models'] = models!.map((v) => v.toJson()).toList();
     }
     return data;
   }

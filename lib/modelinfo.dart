@@ -61,27 +61,33 @@ class _ModelInfoScreenState extends State<ModelInfoScreen> {
           ),
         ],
       ),
-      body: Center(
-        // FutureBuilder
-        child: FutureBuilder<Map<String, dynamic> >(
-          future: getModel(widget.modelName),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              // until data is fetched, show loader
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasData) {
-              // once data is fetched, display it on screen (call buildPosts())
-              final modeldata = snapshot.data!;
-              return  modeldata['models'] == null
-              ? ModelDisplay(model: modeldata, callback: updateModel)
-              : ModelGroupDisplay(model: modeldata);
-            } else {
-              // if no data, show simple Text
-              return const Text("Not Connected to xLights");
-            }
-          },
+      body: Container(
+        child: Container(
+          padding: EdgeInsets.all(10),
+          //color: Color(0xFFE8EAF6),
+        child: Center(
+          // FutureBuilder
+          child: FutureBuilder<Map<String, dynamic> >(
+            future: getModel(widget.modelName),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // until data is fetched, show loader
+                return const CircularProgressIndicator();
+              } else if (snapshot.hasData) {
+                // once data is fetched, display it on screen (call buildPosts())
+                final modeldata = snapshot.data!;
+                return  modeldata['models'] == null
+                ? ModelDisplay(model: modeldata, callback: updateModel)
+                : ModelGroupDisplay(model: modeldata);
+              } else {
+                // if no data, show simple Text
+                return const Text("Not Connected to xLights");
+              }
+            },
+          ),
+          ),
         ),
-        )
+      ),
     );
   }
 }

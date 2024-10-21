@@ -18,28 +18,30 @@ bool openDisabled() => controller.type != 'Ethernet';
         title: Text('ControllerInfo ${controller.name}'),
       ),
       body: 
-          Center(
-            child:Container(
+     SingleChildScrollView(
+        physics: ScrollPhysics(),
+        scrollDirection: Axis.vertical,
+      child:
+            Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(15),
+              //borderRadius: BorderRadius.circular(15),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+            child: 
                 Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
+               // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
+                //crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Name: ${controller.name}'),
-                  Text('IP: ${controller.address}'),
-                  Text('${controller.vendor} ${controller.model}'),
-                  Text('Protocol: ${controller.protocol}'),
-                  Text('Type: ${controller.type}'),
-                  Text('Start Channel: ${controller.startchannel}'),
-                  Text('Channel: ${controller.channels}'),
-                  Text('Managed: ${controller.managed}'),
-                  Text('Active: ${controller.active}'),
+                  _buildResultRow('Name', controller.name),
+                  _buildResultRow('IP',  controller.address),
+                  _buildResultRow(controller.vendor,  controller.model),
+                  _buildResultRow('Protocol', controller.protocol),
+                  _buildResultRow('Type', controller.type),
+                  _buildResultRow('Start Channel',controller.startchannel.toString()),
+                  _buildResultRow('Channel', controller.channels.toString()),
+                  _buildResultRow('Managed', controller.managed.toString()),
+                  _buildResultRow('Active', controller.active.toString()),
                   TextButton(
                     onPressed: () {
                       Navigator.push(context,
@@ -61,8 +63,7 @@ bool openDisabled() => controller.type != 'Ethernet';
                   ),
                 ],
                 
-                           ),
-              ],
+
             ),
             ),
           ),
@@ -70,7 +71,7 @@ bool openDisabled() => controller.type != 'Ethernet';
     );
   }
 
-  Widget _buildResultRow(String label, String value) {
+  Widget _buildResultRow(String? label, String? value) {
     return Container(
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(color: Colors.black)),
@@ -82,13 +83,14 @@ bool openDisabled() => controller.type != 'Ethernet';
             style: TextStyle(fontSize: 14),
           ),
           Text(
-            value,
+            value!,
             style: TextStyle(fontSize: 14),
           ),
         ],
       ),
     );
   }
+
   
   void uploadtoController(String? address) 
   {

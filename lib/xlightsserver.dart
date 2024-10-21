@@ -7,47 +7,48 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xlights_test/controllerports.dart';
 
-  final dio = Dio();
+final dio = Dio();
 
 Future<String> getBaseUrl() async {
-    final prefs = await SharedPreferences.getInstance();
-    final ip = prefs.getString('ip') ?? '127.0.0.1';
-    final port = prefs.getString('port') ?? '49913';
-    var url = 'http://$ip:$port';
-    return url;
-  }
+  final prefs = await SharedPreferences.getInstance();
+  final ip = prefs.getString('ip') ?? '127.0.0.1';
+  final port = prefs.getString('port') ?? '49913';
+  var url = "http://$ip:$port";
+  return url;
+}
 
 Future<List<Controller>> getControllers() async {
   final baseurl = await getBaseUrl();
   final fullURL = '$baseurl/getControllers';
-
   //final dio = Dio();
   final response = await dio.get(fullURL);
-  print(response.data);
-    if (response.statusCode == 200) {
- return (json.decode(response.data) as List)
+  //print(response.data);
+  if (response.statusCode == 200) {
+    return (json.decode(response.data) as List)
       .map((data) => Controller.fromJson(data))
       .toList();
-      }else{throw Exception('Failed to load Controller');}
+  } else {
+    throw Exception('Failed to load Controller');
+  }
 }
 
 Future<bool> uploadControllerConfig(String? address) async {
   final baseurl = await getBaseUrl();
   final fullURL = '$baseurl/uploadController?ip=$address';
-
   final response = await dio.get(fullURL);
-  print(response.data);
-    if (response.statusCode == 200) {
- return true;
-      }else{throw Exception('Failed to load Controller');}
+  //print(response.data);
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    throw Exception('Failed to load Controller'); 
+  }
  //return false;
 }
 
 Future<ControllerPorts> getModelsOnController(String? address) async {
-    final baseurl = await getBaseUrl();
-final fullURL = '$baseurl/getControllerPortMap?ip=$address';
-    final response = await dio.get(fullURL);
-  
+  final baseurl = await getBaseUrl();
+  final fullURL = '$baseurl/getControllerPortMap?ip=$address';
+  final response = await dio.get(fullURL);  
   if (response.statusCode == 200) {
     // print('received: ${response.body}');
     return (ControllerPorts.fromJson(json.decode(response.data)));
@@ -57,10 +58,9 @@ final fullURL = '$baseurl/getControllerPortMap?ip=$address';
 }
 
 Future<List<String>> getModels() async {
-    final baseurl = await getBaseUrl();
-    final fullURL = '$baseurl/getModels';
-    final response = await dio.get(fullURL);
-  
+  final baseurl = await getBaseUrl();
+  final fullURL = '$baseurl/getModels';
+  final response = await dio.get(fullURL);  
   if (response.statusCode == 200) {
     // print('received: ${response.body}');
     List<dynamic> rawTags = json.decode(response.data);
@@ -76,10 +76,9 @@ Future<List<String>> getModels() async {
 }
 
 Future<Map<String, dynamic>> getModel(String? name) async {
-    final baseurl = await getBaseUrl();
-    final fullURL = '$baseurl/getModel?model=$name';
-    final response = await dio.get(fullURL);
-  
+  final baseurl = await getBaseUrl();
+  final fullURL = '$baseurl/getModel?model=$name';
+  final response = await dio.get(fullURL);  
   if (response.statusCode == 200) {
     // print('received: ${response.body}');
     return json.decode(response.data);
@@ -107,12 +106,13 @@ Future<String> getVersion() async {
 Future<String> getShowFolder() async {
   final baseurl = await getBaseUrl();
   final fullURL = '$baseurl/getShowFolder';
-
   final response = await dio.get(fullURL);
   //print(response.data);
-    if (response.statusCode == 200) {
- return response.data;
-      }else{throw Exception('Failed to load Controller');}
+  if (response.statusCode == 200) {
+    return response.data;
+  } else {
+    throw Exception('Failed to load Controller');
+  }
  //return false;
 }
 

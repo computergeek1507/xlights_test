@@ -91,7 +91,7 @@ class _StartScreenState extends State<StartScreen> {
     return 
  Container(
           padding: EdgeInsets.all(10),
-          color: Color(0xFFE8EAF6),
+          //color: Color(0xFFE8EAF6),
           child: Column(
             children: [
               _buildButton('Controllers', () => Navigator.pushNamed(context, '/controllers')),

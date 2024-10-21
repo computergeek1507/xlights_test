@@ -66,104 +66,113 @@ class _ModelDisplayState extends State<ModelDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Text('Name', style: styles.resultsGrid),
-            Text(widget.model['name'], style: styles.resultsGrid),
-          ],
-        ),
-        Row(
-          children: [
-            Text('Type', style: styles.resultsGrid),
-            Text(widget.model['DisplayAs'], style: styles.resultsGrid),
-          ],
-        ),
-        Row(
-          children: [
-            Text('StartChannel', style: styles.resultsGrid),
-            Text(widget.model['StartChannel'].toString(), style: styles.resultsGrid),
-          ],
-        ),
-        Row(
-          children: [
-            Text('LayoutGroup', style: styles.resultsGrid),
-            Text(widget.model['LayoutGroup'], style: styles.resultsGrid),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(child: Text('Controller', style: styles.resultsGridController)),
-            Expanded(child: Text(widget.model['Controller'], style: styles.resultsGridController)),
-           /*Expanded(
-              child: SelectDropdown(
-                data: getAutoControllers(),
-                defaultButtonText: widget.model.Controller == null ? "Use Start Channel" : widget.model.Controller,
-                onSelect: setController,
-                buttonTextAfterSelection: (selectedItem, index) => selectedItem,
-                rowTextForSelection: (item, index) => item,
-              ),
-            ),*/
-          ],
-        ),
-        /*DialogInput(
-          isDialogVisible: isDialogVisible,
-          message: "Set Controller Port",
-          hintInput: "1-48",
-          autoCorrect: false,
-          keyboardType: TextInputType.number,
-          initValueTextInput: widget.model.ControllerConnection?['Port'],
-          submitInput: (inputText) => sendInput(inputText),
-          closeDialog: () => setState(() {
-            isDialogVisible = false;
-          }),
-        ),*/
-         Expanded(child: Text( widget.model['controllerConnection'] == null ? '':widget.model['controllerConnection']['Port'], style: styles.resultsGridController)),
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              isDialogVisible = true;
-            });
-          },
-          child: Row(
+ return SingleChildScrollView(
+        physics: ScrollPhysics(),
+        scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          Row(
             children: [
-              Text('Controller Port', style: styles.resultsGrid),
-              Text(widget.model['controllerConnection'] == null ? '':widget.model['controllerConnection']?['Port'].toString() ?? '', style: styles.resultsGrid),
+              _buildDecoratedText('Name', styles.resultsGrid),
+              _buildDecoratedText(widget.model['name'],  styles.resultsGrid),
             ],
           ),
-        ),
-        Row(
-          children: [
-            Text('Model Chain', style: styles.resultsGrid),
-            Text(widget.model['ModelChain'] ?? "Beginning", style: styles.resultsGrid),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(child: Text('Controller Protocol', style: styles.resultsGridController)),
-            Expanded(child: Text(widget.model['controllerConnection'] == null ? '':widget.model['controllerConnection']?['Protocol'], style: styles.resultsGridController)),
-           /* Expanded(
-              child: SelectDropdown(
-                data: getProtocols(widget.model?.Controller),
-                defaultButtonText: widget.model.ControllerConnection?['Protocol'],
-                onSelect: setProtocol,
-                buttonTextAfterSelection: (selectedItem, index) => selectedItem,
-                rowTextForSelection: (item, index) => item,
-              ),
-            ),*/
-          ],
-        ),
-        Row(
-          children: [
-            Text('StringType', style: styles.resultsGrid),
-            Text(widget.model['StringType'], style: styles.resultsGrid),
-          ],
-        ),
-      ],
+          Row(
+            children: [
+              _buildDecoratedText('Type', styles.resultsGrid),
+              _buildDecoratedText(widget.model['DisplayAs'],  styles.resultsGrid),
+            ],
+          ),
+          Row(
+            children: [
+              _buildDecoratedText('StartChannel', styles.resultsGrid),
+              _buildDecoratedText(widget.model['StartChannel'].toString(),  styles.resultsGrid),
+            ],
+          ),
+          Row(
+            children: [
+              _buildDecoratedText('LayoutGroup',  styles.resultsGrid),
+              _buildDecoratedText(widget.model['LayoutGroup'], styles.resultsGrid),
+            ],
+          ),
+          Row(
+            children: [
+              _buildDecoratedText('Controller',styles.resultsGridController),
+              _buildDecoratedText(widget.model['Controller'], styles.resultsGridController),
+             /*Expanded(
+                child: SelectDropdown(
+                  data: getAutoControllers(),
+                  defaultButtonText: widget.model.Controller == null ? "Use Start Channel" : widget.model.Controller,
+                  onSelect: setController,
+                  buttonTextAfterSelection: (selectedItem, index) => selectedItem,
+                  rowTextForSelection: (item, index) => item,
+                ),
+              ),*/
+            ],
+          ),
+          /*DialogInput(
+            isDialogVisible: isDialogVisible,
+            message: "Set Controller Port",
+            hintInput: "1-48",
+            autoCorrect: false,
+            keyboardType: TextInputType.number,
+            initValueTextInput: widget.model.ControllerConnection?['Port'],
+            submitInput: (inputText) => sendInput(inputText),
+            closeDialog: () => setState(() {
+              isDialogVisible = false;
+            }),
+          ),*/
+       Row(
+              children: [
+                _buildDecoratedText('Controller Port', styles.resultsGrid),
+                _buildDecoratedText(widget.model['ControllerConnection'] == null||
+                  widget.model['ControllerConnection']['Port'] == null ? '':widget.model['ControllerConnection']?['Port'].toString() ?? '', styles.resultsGrid),
+              ],
+            ),
+          Row(
+            children: [
+              _buildDecoratedText('Model Chain', styles.resultsGrid),
+              _buildDecoratedText(widget.model['ModelChain'] ?? "Beginning", styles.resultsGrid),
+            ],
+          ),
+          Row(
+            children: [
+              _buildDecoratedText('Controller Protocol',  styles.resultsGridController),
+              _buildDecoratedText(widget.model['ControllerConnection'] == null ||
+                widget.model['ControllerConnection']['Protocol'] == null ? '':widget.model['ControllerConnection']?['Protocol'], styles.resultsGridController),
+             /* Expanded(
+                child: SelectDropdown(
+                  data: getProtocols(widget.model?.Controller),
+                  defaultButtonText: widget.model.ControllerConnection?['Protocol'],
+                  onSelect: setProtocol,
+                  buttonTextAfterSelection: (selectedItem, index) => selectedItem,
+                  rowTextForSelection: (item, index) => item,
+                ),
+              ),*/
+            ],
+          ),
+          Row(
+            children: [
+              _buildDecoratedText('StringType', styles.resultsGrid),
+              _buildDecoratedText(widget.model['StringType'], styles.resultsGrid),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
+
+Widget _buildDecoratedText(String text, TextStyle style) => Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.black),
+          //borderRadius: const BorderRadius.all(Radius.circular(2)),
+        ),
+        //margin: const EdgeInsets.all(4),
+        child: Text(text, style: style),
+      ),
+    );
 
 class styles {
   static const TextStyle resultsGrid = TextStyle(fontSize: 16, letterSpacing: 1.0);

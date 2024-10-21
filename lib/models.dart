@@ -19,7 +19,6 @@ class _ModelsScreenState extends State<ModelsScreen> {
     super.initState();
     modelsList = getModels();
   }
-
   
   @override
   Widget build(BuildContext context) {
@@ -69,9 +68,6 @@ class _ModelsScreenState extends State<ModelsScreen> {
         title: Text(modelName),
         //subtitle: Text(itemsubTitle),
         onTap: () {
-
-          //var snackBar = SnackBar(content: Text("Tapped on $itemTitle"));
-          //ScaffoldMessenger.of(context).showSnackBar(snackBar);
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => ModelInfoScreen( modelName: modelName,)));
         },
