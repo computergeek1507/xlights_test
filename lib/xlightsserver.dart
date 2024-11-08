@@ -116,6 +116,80 @@ Future<String> getShowFolder() async {
  //return false;
 }
 
+Future<bool> setModelController(String? model, int controllerIndex ) async {
+  final baseurl = await getBaseUrl();
+  final fullURL = '$baseurl/setModelProperty?model=$model&key=Controller&data=$controllerIndex';
+  //final fullURL = '$baseurl/uploadController?ip=$address';
+  final response = await dio.get(fullURL);
+  //print(response.data);
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    throw Exception('Failed to load Controller'); 
+  }
+ //return false;
+}
+
+Future<bool> setModelControllerPort(String? model, int controllerport ) async {
+  final baseurl = await getBaseUrl();
+  ///setModelProperty?model=${values.model}&key=ModelControllerConnectionPort&data=${values.port}
+  final fullURL = '$baseurl/setModelProperty?model=$model&key=ModelControllerConnectionPort&data=$controllerport';
+  //final fullURL = '$baseurl/uploadController?ip=$address';
+  final response = await dio.get(fullURL);
+  //print(response.data);
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    throw Exception('Failed to set Controller port'); 
+  }
+ //return false;
+}
+
+Future<bool> setModelModelChain(String? model, int chainIndex ) async {
+  final baseurl = await getBaseUrl();
+  ///setModelProperty?model=${values.model}&key=ModelControllerConnectionPort&data=${values.port}
+  final fullURL = '$baseurl/setModelProperty?model=$model&key=ModelChain&data=$chainIndex';
+  //final fullURL = '$baseurl/uploadController?ip=$address';
+  final response = await dio.get(fullURL);
+  //print(response.data);
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    throw Exception('Failed to set Model Chain'); 
+  }
+ //return false;
+}
+
+Future<bool> setModelSmartRemote(String? model, int smartRemote ) async {
+  final baseurl = await getBaseUrl();
+  ///setModelProperty?model=${values.model}&key=ModelControllerConnectionPort&data=${values.port}
+  final fullURL = '$baseurl/setModelProperty?model=$model&key=SmartRemote&data=$smartRemote';
+  //final fullURL = '$baseurl/uploadController?ip=$address';
+  final response = await dio.get(fullURL);
+  //print(response.data);
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    throw Exception('Failed to set Model SmartRemote'); 
+  }
+ //return false;
+}
+
+Future<bool> setModelSmartRemoteType(String? model, int smartRemoteType ) async {
+  final baseurl = await getBaseUrl();
+  ///setModelProperty?model=${values.model}&key=ModelControllerConnectionPort&data=${values.port}
+  final fullURL = '$baseurl/setModelProperty?model=$model&key=SmartRemoteType&data=$smartRemoteType';
+  //final fullURL = '$baseurl/uploadController?ip=$address';
+  final response = await dio.get(fullURL);
+  //print(response.data);
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    throw Exception('Failed to set Model SmartRemote Type'); 
+  }
+ //return false;
+}
+
 /*
 import axios from "axios";
 
