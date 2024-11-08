@@ -110,6 +110,7 @@ class _ModelDisplayState extends State<ModelDisplay> {
                     border: Border.all(width: 1, color: Colors.black),
                     //borderRadius: const BorderRadius.all(Radius.circular(2)),
                   ),
+                  padding: const EdgeInsets.all(8.0),
                   //margin: const EdgeInsets.all(4),
                   child: MaterialButton(
                     onPressed: () async {
@@ -147,6 +148,7 @@ class _ModelDisplayState extends State<ModelDisplay> {
                   decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Colors.black),
                   ),
+                  padding: const EdgeInsets.all(8.0),
                   child: MaterialButton(
                     onPressed: widget.model['ControllerConnection']['Port'] == null ? null : () async {
                       int? val = await showNumberDialog(
@@ -163,9 +165,10 @@ class _ModelDisplayState extends State<ModelDisplay> {
                           }
                     },
                     child: Align(
+                      
                       alignment: Alignment.centerLeft,
                       child: Text(widget.model['ControllerConnection'] == null||
-                  widget.model['ControllerConnection']['Port'] == null ? '':widget.model['ControllerConnection']?['Port'].toString() ?? '',
+                      widget.model['ControllerConnection']['Port'] == null ? '':widget.model['ControllerConnection']?['Port'].toString() ?? '',
                           style: TextStyle(fontSize: 20.0),
                           textAlign: TextAlign.right),
                     ),
@@ -204,6 +207,24 @@ class _ModelDisplayState extends State<ModelDisplay> {
             ],
           ),
           Row(
+            children: [//SmartRemote
+              _buildDecoratedText('Smart Remote', styles.resultsGrid),
+              _buildDecoratedText(widget.model['ControllerConnection'] == null ||
+                widget.model['ControllerConnection']['SmartRemote'] == null ? '' : 
+                widget.model['ControllerConnection']?['SmartRemote'], styles.resultsGridController),
+
+            ],
+          ),
+          Row(
+            children: [
+              _buildDecoratedText('Smart Reciever Type', styles.resultsGrid),
+              _buildDecoratedText(widget.model['ControllerConnection'] == null ||
+                widget.model['ControllerConnection']['SmartRemoteType'] == null ? '' : 
+                widget.model['ControllerConnection']?['SmartRemoteType'], styles.resultsGridController),
+
+            ],
+          ),
+          Row(
             children: [
               _buildDecoratedText('StringType', styles.resultsGrid),
               _buildDecoratedText(widget.model['StringType'], styles.resultsGrid),
@@ -221,6 +242,7 @@ Widget _buildDecoratedText(String text, TextStyle style) => Expanded(
           border: Border.all(width: 1, color: Colors.black),
           //borderRadius: const BorderRadius.all(Radius.circular(2)),
         ),
+        padding: const EdgeInsets.all(8.0),
         //margin: const EdgeInsets.all(4),
         child: Text(text, style: style),
       ),
@@ -233,6 +255,7 @@ Widget _buildDecoratedText(String text, TextStyle style) => Expanded(
           //borderRadius: const BorderRadius.all(Radius.circular(2)),
         ),
         //margin: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(8.0),
         child: Text(text, style: style),
       ),
     );
