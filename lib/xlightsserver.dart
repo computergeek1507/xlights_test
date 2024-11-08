@@ -145,7 +145,7 @@ Future<bool> setModelControllerPort(String? model, int controllerport ) async {
  //return false;
 }
 
-Future<bool> setModelModelChain(String? model, int chainIndex ) async {
+Future<bool> setModelModelChain(String? model, String chainIndex ) async {
   final baseurl = await getBaseUrl();
   ///setModelProperty?model=${values.model}&key=ModelControllerConnectionPort&data=${values.port}
   final fullURL = '$baseurl/setModelProperty?model=$model&key=ModelChain&data=$chainIndex';
@@ -175,7 +175,23 @@ Future<bool> setModelSmartRemote(String? model, int smartRemote ) async {
  //return false;
 }
 
-Future<bool> setModelSmartRemoteType(String? model, int smartRemoteType ) async {
+
+Future<bool> setModelControllerProtocol(String? model, String protocol ) async {
+  final baseurl = await getBaseUrl();
+  ///setModelProperty?model=${values.model}&key=ModelControllerConnectionPort&data=${values.port}
+  final fullURL = '$baseurl/setModelProperty?model=$model&key=ModelControllerConnectionProtocol&data=$protocol';
+  //final fullURL = '$baseurl/uploadController?ip=$address';
+  final response = await dio.get(fullURL);
+  //print(response.data);
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    throw Exception('Failed to set Model Controller Protocol'); 
+  }
+ //return false;
+}
+
+Future<bool> setModelSmartRemoteType(String? model, String smartRemoteType ) async {
   final baseurl = await getBaseUrl();
   ///setModelProperty?model=${values.model}&key=ModelControllerConnectionPort&data=${values.port}
   final fullURL = '$baseurl/setModelProperty?model=$model&key=SmartRemoteType&data=$smartRemoteType';

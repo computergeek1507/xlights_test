@@ -15,7 +15,8 @@ final Map<String, dynamic> model;
 class _ModelDisplayState extends State<ModelDisplay> {
   bool isDialogVisible = false;
   List<Controller> controllers = [];
-    List<String> st_controllers = [];
+  List<String> st_controllers = [];
+  List<String> st_smart_recievers = [];
 
   @override
   void initState() {
@@ -39,9 +40,19 @@ class _ModelDisplayState extends State<ModelDisplay> {
     setModelController(itemValue, itemIndex);
   }
 
-  void setProtocol(String itemValue, int itemIndex) {
+  void setModelProtocol(String itemValue, String itemIndex) {
     print(itemIndex);
-    //setModelControllerProtocol({'model': widget.model.name, 'protocol': itemIndex}, widget.callback);
+    setModelControllerProtocol(itemValue, itemIndex);
+  }
+
+  void setModelSmartRemote(String itemValue, int itemIndex) {
+    print(itemIndex);
+    setModelSmartRemote(itemValue, itemIndex);
+  }
+
+  void setModelSmartRemoteType(String itemValue, String itemIndex) {
+    print(itemIndex);
+    setModelSmartRemoteType(itemValue, itemIndex);
   }
 
   List<String> getProtocols(String controlName) {
@@ -61,6 +72,21 @@ class _ModelDisplayState extends State<ModelDisplay> {
       }
     }
     return arr;
+  }
+
+  List<String> getSmartRemotes(String controlName) {
+    var isObjectPresent = controllers.firstWhere((o) => o.name == controlName, orElse: () => Controller());
+     List<String> arr = ["None"];
+    for (int k = 0; k < (isObjectPresent.controllercap?.smartremotecount ?? 0); k++) {
+      // code to be executed on each item
+      arr.add(String.fromCharCode(k+65));
+    }
+    return arr;
+  }
+
+  List<String> getSmartRemoteTypes(String controlName) {
+    var isObjectPresent = controllers.firstWhere((o) => o.name == controlName, orElse: () => Controller());
+    return isObjectPresent.controllercap?.smartremotetypes ?? [];
   }
 
   @override
@@ -210,8 +236,51 @@ class _ModelDisplayState extends State<ModelDisplay> {
             children: [//SmartRemote
               _buildDecoratedText('Smart Remote', styles.resultsGrid),
               _buildDecoratedText(widget.model['ControllerConnection'] == null ||
-                widget.model['ControllerConnection']['SmartRemote'] == null ? 'false' : 
-                widget.model['ControllerConnection']?['SmartRemote'], styles.resultsGridController),
+                widget.model['ControllerConnection']['SmartRemote'] == null ? 'None' : 
+                (widget.model['ControllerConnection']?['SmartRemote']).toString(), styles.resultsGridController),
+
+            ],
+          ),
+          Row(
+            children: [//SmartRemote
+              _buildDecoratedText('Smart Remote', styles.resultsGrid),
+             Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.black),
+                    //borderRadius: const BorderRadius.all(Radius.circular(2)),
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  //margin: const EdgeInsets.all(4),
+                  child: MaterialButton(
+                    onPressed: () async {
+                      var types = getSmartRemotes(widget.model['Controller']);
+                      int index = int.parse(widget.model['ControllerConnection']?['SmartRemote']);
+                      String? val = await showSelectionDialog(
+                          context,
+                          "Select Smart Remote",
+                          types,
+                         types[index]);
+                      if (val != null) {
+                        setState(
+                          () {
+                            int new_idx = types.indexOf(val);
+                            //setController(widget.model['name'],
+                            //    new_idx);
+                            widget.model['ControllerConnection']?['SmartRemote'] = (new_idx.toString());
+                          },
+                        );
+                      }
+                    },
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text((widget.model['ControllerConnection']?['SmartRemote'] ?? '0') == "0" ? 'None' : String.fromCharCode(int.parse(widget.model['ControllerConnection']?['SmartRemote'] ?? '0') + 64),
+                          style: TextStyle(fontSize: 20.0),
+                          textAlign: TextAlign.right),
+                    ),
+                  ),
+                ),
+              ), 
 
             ],
           ),
