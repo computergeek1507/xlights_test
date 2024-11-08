@@ -210,13 +210,13 @@ class _ModelDisplayState extends State<ModelDisplay> {
             children: [//SmartRemote
               _buildDecoratedText('Smart Remote', styles.resultsGrid),
               _buildDecoratedText(widget.model['ControllerConnection'] == null ||
-                widget.model['ControllerConnection']['SmartRemote'] == null ? '' : 
+                widget.model['ControllerConnection']['SmartRemote'] == null ? 'false' : 
                 widget.model['ControllerConnection']?['SmartRemote'], styles.resultsGridController),
 
             ],
           ),
           Row(
-            children: [
+            children: widget.model['ControllerConnection']['SmartRemote'] == null ? [] : [
               _buildDecoratedText('Smart Reciever Type', styles.resultsGrid),
               _buildDecoratedText(widget.model['ControllerConnection'] == null ||
                 widget.model['ControllerConnection']['SmartRemoteType'] == null ? '' : 
