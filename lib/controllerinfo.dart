@@ -47,19 +47,22 @@ bool openDisabled() => controller.type != 'Ethernet';
                       Navigator.push(context,
                       MaterialPageRoute(builder: (context) => ControllerModelScreen ( controllerIP: controller.address!,controllerName: controller.name!)));
                     },
-                    child: const Text('Visualize'),
+                    child: const Text('Visualize',
+            style: TextStyle(fontSize: 16),),
                   ),
                   TextButton(
                     onPressed: uploadDisabled() ? null : () {
                       uploadtoController(controller.address);
                     },
-                    child: const Text('Upload Outputs'),
+                    child: const Text('Upload Outputs',
+            style: TextStyle(fontSize: 16),),
                   ),
                   TextButton(
                     onPressed: openDisabled() ? null : () {
                       launchController (controller.address);
                     },
-                    child: const Text('Open Controller'),
+                    child: const Text('Open Controller',
+            style: TextStyle(fontSize: 16),),
                   ),
                 ],
                 
@@ -73,18 +76,20 @@ bool openDisabled() => controller.type != 'Ethernet';
 
   Widget _buildResultRow(String? label, String? value) {
     return Container(
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(color: Colors.black)),
       ),
       child: Row(
+        
         children: [
           Text(
             "$label: ",
-            style: TextStyle(fontSize: 14),
+            style: TextStyle(fontSize: 16),
           ),
           Text(
             value!,
-            style: TextStyle(fontSize: 14),
+            style: TextStyle(fontSize: 16),
           ),
         ],
       ),
