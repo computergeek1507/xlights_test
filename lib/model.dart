@@ -3,10 +3,10 @@ import 'package:xlights_test/controller.dart';
 import 'package:xlights_test/xlightsserver.dart';
 
 class ModelDisplay extends StatefulWidget {
-final Map<String, dynamic> model;
+Map<String, dynamic> model;
   final Function callback;
 
-  const ModelDisplay({Key? key, required this.model, required this.callback}) : super(key: key);
+  ModelDisplay({Key? key, required this.model, required this.callback}) : super(key: key);
 
   @override
   _ModelDisplayState createState() => _ModelDisplayState();
@@ -30,29 +30,33 @@ class _ModelDisplayState extends State<ModelDisplay> {
     //setState(() {});
   }
 
-  void setControllerPort(String modelName , int port) {
+  Future<void> updateModel() async {
+    widget.model = await getModel(widget.model['name']);
+  }
+
+  void setControllerPort(String modelName , int port) async {
     print(modelName);
-    setModelControllerPort(modelName, port);    
+    await setModelControllerPort(modelName, port);    
   }
 
-  void setController(String itemValue, int itemIndex) {
+  void setController(String itemValue, int itemIndex) async {
     print(itemIndex);
-    setModelController(itemValue, itemIndex);
+    await setModelController(itemValue, itemIndex);
   }
 
-  void setModelProtocol(String itemValue, String itemIndex) {
+  void setModelProtocol(String itemValue, int itemIndex) async{
     print(itemIndex);
-    setModelControllerProtocol(itemValue, itemIndex);
+    await setModelControllerProtocol(itemValue, itemIndex);
   }
 
-  void setModelSmartRemote(String itemValue, int itemIndex) {
+  void setModelSmartRemote(String itemValue, int itemIndex) async {
     print(itemIndex);
-    setModelSmartRemote(itemValue, itemIndex);
+    await setModelControllerSmartRemote(itemValue, itemIndex);
   }
 
-  void setModelSmartRemoteType(String itemValue, String itemIndex) {
+  void setModelSmartRemoteType(String itemValue, int itemIndex) async {
     print(itemIndex);
-    setModelSmartRemoteType(itemValue, itemIndex);
+    await setModelControllerSmartRemoteType(itemValue, itemIndex);
   }
 
   List<String> getProtocols(String controlName) {
@@ -73,6 +77,21 @@ class _ModelDisplayState extends State<ModelDisplay> {
     }
     return arr;
   }
+
+ /* List<String> getModelsOnControllerByPort(String controlName, int port) {
+    List<String> arr = [];
+    String ip = controllers.firstWhere((o) => o.name == controlName, orElse: () => Controller()).address!;
+    
+    var controllerports = await getModelsOnController(ip);
+    for(var controllerport in controllerports.pixelports){
+      if(controllerport.port == port){
+        for(var model in controllerport.models){
+          arr.add(model.name);
+        }
+      }
+    }
+    return arr;
+  }*/
 
   List<String> getSmartRemotes(String controlName) {
     var isObjectPresent = controllers.firstWhere((o) => o.name == controlName, orElse: () => Controller());
@@ -146,11 +165,15 @@ class _ModelDisplayState extends State<ModelDisplay> {
                           st_controllers,
                           widget.model['Controller'] ?? 'Use Start Channel');
                       if (val != null) {
-                        setState(
-                          () {
+                        setState(() {
                             setController(widget.model['name'],
                                 st_controllers.indexOf(val.toString()));
                             widget.model['Controller'] = val;
+                            getModel(widget.model['name']).then((model) {
+                              setState(() {
+                                widget.model = model;
+                              });
+                            });
                           },
                         );
                       }
@@ -186,12 +209,16 @@ class _ModelDisplayState extends State<ModelDisplay> {
                               () {
                                 setControllerPort(widget.model['name'],val);
                                 widget.model['ControllerConnection']['Port'] = val;
+                                getModel(widget.model['name']).then((model) {
+                              setState(() {
+                                widget.model = model;
+                              });
+                            });
                               },
                             );
                           }
                     },
-                    child: Align(
-                      
+                    child: Align(                      
                       alignment: Alignment.centerLeft,
                       child: Text(widget.model['ControllerConnection'] == null||
                       widget.model['ControllerConnection']['Port'] == null ? '':widget.model['ControllerConnection']?['Port'].toString() ?? '',
@@ -219,28 +246,60 @@ class _ModelDisplayState extends State<ModelDisplay> {
           Row(
             children: [
               _buildDecoratedText('Controller Protocol',  styles.resultsGridController),
-              _buildDecoratedText(widget.model['ControllerConnection'] == null ||
-                widget.model['ControllerConnection']['Protocol'] == null ? '':widget.model['ControllerConnection']?['Protocol'], styles.resultsGridController),
-             /* Expanded(
-                child: SelectDropdown(
-                  data: getProtocols(widget.model?.Controller),
-                  defaultButtonText: widget.model.ControllerConnection?['Protocol'],
-                  onSelect: setProtocol,
-                  buttonTextAfterSelection: (selectedItem, index) => selectedItem,
-                  rowTextForSelection: (item, index) => item,
+             // _buildDecoratedText(widget.model['ControllerConnection'] == null ||
+             //   widget.model['ControllerConnection']['Protocol'] == null ? '':widget.model['ControllerConnection']?['Protocol'], styles.resultsGridController),
+             Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.black),
+                    //borderRadius: const BorderRadius.all(Radius.circular(2)),
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  //margin: const EdgeInsets.all(4),
+                  child: MaterialButton(
+                    onPressed: () async {
+                      var protocols = getProtocols(widget.model['Controller']);
+                      String? val = await showSelectionDialog(
+                          context,
+                          "Select Controller Protocol",
+                          protocols,
+                          widget.model['ControllerConnection']?['Protocol'] ?? '');
+                      if (val != null) {
+                        setState(() {
+                          int new_idx = protocols.indexOf(val);
+                          setModelProtocol(widget.model['name'], new_idx);
+                            //setController(widget.model['name'],
+                            //    st_controllers.indexOf(val.toString()));
+                            widget.model['ControllerConnection']['Protocol'] = val;
+                            getModel(widget.model['name']).then((model) {
+                              setState(() {
+                                widget.model = model;
+                              });
+                            });
+                          },
+                        );
+                      }
+                    },
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(widget.model['ControllerConnection'] == null ||
+                widget.model['ControllerConnection']['Protocol'] == null ? '':widget.model['ControllerConnection']?['Protocol'],
+                          style: TextStyle(fontSize: 20.0),
+                          textAlign: TextAlign.right),
+                    ),
+                  ),
                 ),
-              ),*/
+              ), 
             ],
           ),
-          Row(
-            children: [//SmartRemote
-              _buildDecoratedText('Smart Remote', styles.resultsGrid),
-              _buildDecoratedText(widget.model['ControllerConnection'] == null ||
-                widget.model['ControllerConnection']['SmartRemote'] == null ? 'None' : 
-                (widget.model['ControllerConnection']?['SmartRemote']).toString(), styles.resultsGridController),
-
-            ],
-          ),
+          //Row(
+          //  children: [//SmartRemote
+          //    _buildDecoratedText('Smart Remote', styles.resultsGrid),
+          //    _buildDecoratedText(widget.model['ControllerConnection'] == null ||
+         //       widget.model['ControllerConnection']['SmartRemote'] == null ? 'None' : 
+         //       (widget.model['ControllerConnection']?['SmartRemote']).toString(), styles.resultsGridController),
+         //   ],
+         // ),
           Row(
             children: [//SmartRemote
               _buildDecoratedText('Smart Remote', styles.resultsGrid),
@@ -255,7 +314,7 @@ class _ModelDisplayState extends State<ModelDisplay> {
                   child: MaterialButton(
                     onPressed: () async {
                       var types = getSmartRemotes(widget.model['Controller']);
-                      int index = int.parse(widget.model['ControllerConnection']?['SmartRemote']);
+                      int index = int.parse(widget.model['ControllerConnection']?['SmartRemote'] ?? '0');
                       String? val = await showSelectionDialog(
                           context,
                           "Select Smart Remote",
@@ -265,9 +324,14 @@ class _ModelDisplayState extends State<ModelDisplay> {
                         setState(
                           () {
                             int new_idx = types.indexOf(val);
-                            //setController(widget.model['name'],
-                            //    new_idx);
+                            setModelSmartRemote(widget.model['name'],
+                                new_idx - 1);
                             widget.model['ControllerConnection']?['SmartRemote'] = (new_idx.toString());
+                            getModel(widget.model['name']).then((model) {
+                              setState(() {
+                                widget.model = model;
+                              });
+                            });
                           },
                         );
                       }
@@ -281,15 +345,58 @@ class _ModelDisplayState extends State<ModelDisplay> {
                   ),
                 ),
               ), 
-
             ],
           ),
           Row(
             children: widget.model['ControllerConnection']['SmartRemote'] == null ? [] : [
               _buildDecoratedText('Smart Reciever Type', styles.resultsGrid),
-              _buildDecoratedText(widget.model['ControllerConnection'] == null ||
+             // _buildDecoratedText(widget.model['ControllerConnection'] == null ||
+             //   widget.model['ControllerConnection']['SmartRemoteType'] == null ? '' : 
+             //   widget.model['ControllerConnection']?['SmartRemoteType'], styles.resultsGridController),
+                Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.black),
+                    //borderRadius: const BorderRadius.all(Radius.circular(2)),
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  //margin: const EdgeInsets.all(4),
+                  child: MaterialButton(
+                    onPressed: () async {
+                      var types = getSmartRemoteTypes(widget.model['Controller']);
+                      String selectedType = widget.model['ControllerConnection']?['SmartRemoteType'] ?? types.first;
+                      String? val = await showSelectionDialog(
+                          context,
+                          "Select Smart Remote Type",
+                          types,
+                         selectedType);
+                      if (val != null) {
+                        setState(
+                          () {
+                            int new_idx = types.indexOf(val);
+                            setModelSmartRemoteType(widget.model['name'],
+                                new_idx);
+                            widget.model['ControllerConnection']?['SmartRemoteType'] = (val);
+                            getModel(widget.model['name']).then((model) {
+                              setState(() {
+                                widget.model = model;
+                              });
+                            });
+                          },
+                        );
+                      }
+                    },
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(widget.model['ControllerConnection'] == null ||
                 widget.model['ControllerConnection']['SmartRemoteType'] == null ? '' : 
-                widget.model['ControllerConnection']?['SmartRemoteType'], styles.resultsGridController),
+                widget.model['ControllerConnection']?['SmartRemoteType'],
+                          style: TextStyle(fontSize: 20.0),
+                          textAlign: TextAlign.right),
+                    ),
+                  ),
+                ),
+              ),
 
             ],
           ),
@@ -418,7 +525,7 @@ Future<int?> showNumberDialog(BuildContext context, String title, int selectedIt
                      keyboardType: TextInputType.number,
                     initialValue: selectedItem.toString(),
                     textAlign: TextAlign.center,
-                    onSaved: (val) {
+                    onChanged: (val) {
                       setState(() {
                         if (val != null) {
                           selectedItem = int.parse(val);

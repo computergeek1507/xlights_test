@@ -160,7 +160,7 @@ Future<bool> setModelModelChain(String? model, String chainIndex ) async {
  //return false;
 }
 
-Future<bool> setModelSmartRemote(String? model, int smartRemote ) async {
+Future<bool> setModelControllerSmartRemote(String? model, int smartRemote ) async {
   final baseurl = await getBaseUrl();
   ///setModelProperty?model=${values.model}&key=ModelControllerConnectionPort&data=${values.port}
   final fullURL = '$baseurl/setModelProperty?model=$model&key=SmartRemote&data=$smartRemote';
@@ -175,8 +175,7 @@ Future<bool> setModelSmartRemote(String? model, int smartRemote ) async {
  //return false;
 }
 
-
-Future<bool> setModelControllerProtocol(String? model, String protocol ) async {
+Future<bool> setModelControllerProtocol(String? model, int protocol ) async {
   final baseurl = await getBaseUrl();
   ///setModelProperty?model=${values.model}&key=ModelControllerConnectionPort&data=${values.port}
   final fullURL = '$baseurl/setModelProperty?model=$model&key=ModelControllerConnectionProtocol&data=$protocol';
@@ -191,7 +190,7 @@ Future<bool> setModelControllerProtocol(String? model, String protocol ) async {
  //return false;
 }
 
-Future<bool> setModelSmartRemoteType(String? model, String smartRemoteType ) async {
+Future<bool> setModelControllerSmartRemoteType(String? model, int smartRemoteType ) async {
   final baseurl = await getBaseUrl();
   ///setModelProperty?model=${values.model}&key=ModelControllerConnectionPort&data=${values.port}
   final fullURL = '$baseurl/setModelProperty?model=$model&key=SmartRemoteType&data=$smartRemoteType';
