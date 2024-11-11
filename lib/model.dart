@@ -65,6 +65,17 @@ class _ModelDisplayState extends State<ModelDisplay> {
     var arr2 = isObjectPresent.controllercap?.serialprotocols ?? [];
     return [...arr1, ...arr2];
   }
+  bool isPixelProtocols(String controlName, String protocol) {
+    var isObjectPresent = controllers.firstWhere((o) => o.name == controlName, orElse: () => Controller());
+    var arr1 = isObjectPresent.controllercap?.pixelprotocols ?? [];
+    return arr1.contains(protocol);
+  }
+  bool isSerialProtocols(String controlName, String protocol) {
+    var isObjectPresent = controllers.firstWhere((o) => o.name == controlName, orElse: () => Controller());
+    var arr2 = isObjectPresent.controllercap?.serialprotocols ?? [];
+    return arr2.contains(protocol);
+  }
+
 
   List<String> getAutoControllers() {
     var arr = ["Use Start Channel", "No Controller"];
@@ -78,20 +89,24 @@ class _ModelDisplayState extends State<ModelDisplay> {
     return arr;
   }
 
- /* List<String> getModelsOnControllerByPort(String controlName, int port) {
-    List<String> arr = [];
+ Future<List<String>> getModelsOnControllerByPort(String controlName, String modelName, int port, String protocol, String smartRemote) async {
+    List<String> arr = ["Beginning"];
     String ip = controllers.firstWhere((o) => o.name == controlName, orElse: () => Controller()).address!;
     
     var controllerports = await getModelsOnController(ip);
-    for(var controllerport in controllerports.pixelports){
+    var ports = isPixelProtocols(controlName, protocol) ? controllerports.pixelports : isSerialProtocols(controlName, protocol) ?controllerports.serialports :[];
+    for(var controllerport in ports ?? []){
       if(controllerport.port == port){
-        for(var model in controllerport.models){
-          arr.add(model.name);
+        for(var model in controllerport.models ?? []){
+          String model_smartRemote = model.smartremote == null? '':model.smartremote!;
+          if (model.name != null && model.name != modelName && model_smartRemote == smartRemote) {
+            arr.add(model.name!);
+          }
         }
       }
     }
     return arr;
-  }*/
+  }
 
   List<String> getSmartRemotes(String controlName) {
     var isObjectPresent = controllers.firstWhere((o) => o.name == controlName, orElse: () => Controller());
@@ -241,6 +256,54 @@ class _ModelDisplayState extends State<ModelDisplay> {
             children: [
               _buildDecoratedText('Model Chain', styles.resultsGrid),
               _buildDecoratedText(widget.model['ModelChain'] ?? "Beginning", styles.resultsGrid),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.black),
+                    //borderRadius: const BorderRadius.all(Radius.circular(2)),
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  //margin: const EdgeInsets.all(4),
+                  child: MaterialButton(
+                    onPressed: () async {
+                      var models = await getModelsOnControllerByPort(widget.model['Controller'],
+                      widget.model['name'],
+                      int.parse(widget.model['ControllerConnection']?['Port'] ?? "1"), 
+                      widget.model['ControllerConnection']?['Protocol'] ?? '',
+                      widget.model['ControllerConnection']?['SmartRemote'] ?? '');
+                      String selected_model =widget.model['ModelChain'] ?? "Beginning";
+                      selected_model =selected_model.replaceAll(">", "");
+                      String? val = await showSelectionDialog(
+                          context,
+                          "Select Model Chain",
+                          models,
+                          selected_model);
+                      if (val != null) {
+                        setState(
+                              () {
+                                if (val != "Beginning") {
+                                  val = val != null ? ">" + val! : val;
+                                }
+                                setModelModelChain(widget.model['name'], val ?? '');
+                                widget.model['ControllerConnection']['ModelChain'] = val;
+                                getModel(widget.model['name']).then((model) {
+                              setState(() {
+                                widget.model = model;
+                              });
+                            });
+                              },
+                            );
+                      }
+                    },
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(widget.model['ModelChain'] ?? "Beginning",
+                          style: TextStyle(fontSize: 20.0),
+                          textAlign: TextAlign.right),
+                    ),
+                  ),
+                ),
+              ), 
             ],
           ),
           Row(

@@ -13,9 +13,7 @@ class ModelGroupDisplay extends StatelessWidget {
   }
 
   Widget renderModel(BuildContext context, int index, String item) {
-    return Container(
-      child: Text(item, style: styles.resultsGrid),
-    );
+    return _buildDecoratedText(item, styles.resultsGrid);
   }
 
   @override
@@ -36,8 +34,8 @@ class ModelGroupDisplay extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Expanded(child: Text('Name', style: styles.resultsGrid)),
-                Expanded(child: Text(model['name'], style: styles.resultsGrid)),
+                _buildDecoratedText('Name', styles.resultsGrid),
+                _buildDecoratedText(model['name'],styles.resultsGrid),
               ],
             ),
           ),
@@ -52,8 +50,8 @@ class ModelGroupDisplay extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Expanded(child: Text('LayoutGroup', style: styles.resultsGrid)),
-                Expanded(child: Text(model['LayoutGroup'], style: styles.resultsGrid)),
+                _buildDecoratedText('LayoutGroup', styles.resultsGrid),
+                _buildDecoratedText(model['LayoutGroup'], styles.resultsGrid),
               ],
             ),
           ),
@@ -68,8 +66,8 @@ class ModelGroupDisplay extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Expanded(child: Text('Layout', style: styles.resultsGrid)),
-                Expanded(child: Text(model['layout'], style: styles.resultsGrid)),
+                _buildDecoratedText('Layout',  styles.resultsGrid),
+                _buildDecoratedText(model['layout'], styles.resultsGrid),
               ],
             ),
           ),
@@ -84,7 +82,7 @@ class ModelGroupDisplay extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Expanded(child: Text('Models', style: styles.resultsGrid)),
+                _buildDecoratedText('Models',  styles.resultsGrid),
               ],
             ),
           ),
@@ -114,9 +112,23 @@ class ModelGroupDisplay extends StatelessWidget {
   }
 }
 
+Widget _buildDecoratedText(String text, TextStyle style) => Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.black),
+          //borderRadius: const BorderRadius.all(Radius.circular(2)),
+        ),
+        padding: const EdgeInsets.all(8.0),
+        //margin: const EdgeInsets.all(4),
+        child: Text(text, style: style),
+      ),
+    );
+
+
 class styles {
   static const TextStyle resultsGrid = TextStyle(
-    fontSize: 16,
+    fontSize: 20,
+    letterSpacing: 1.0,
     //padding: EdgeInsets.all(10),
   );
 }
