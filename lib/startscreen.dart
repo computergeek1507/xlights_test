@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xlights_test/xLightsServer.dart';
+import 'package:xlights_test/xlightsserver.dart';
 
 class StartScreen extends StatefulWidget {
   final Map<String, dynamic>? routeParams;
@@ -11,8 +11,8 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
-   late Future<String> xLightsVersion ;
- late Future< String> showFolder ;
+  late Future<String> xLightsVersion;
+  late Future<String> showFolder;
   bool offline = true;
   bool tooOld = false;
 
