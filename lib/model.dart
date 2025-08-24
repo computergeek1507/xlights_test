@@ -214,7 +214,7 @@ class _ModelDisplayState extends State<ModelDisplay> {
                   ),
                   padding: const EdgeInsets.all(8.0),
                   child: MaterialButton(
-                    onPressed: widget.model['ControllerConnection']['Port'] == null ? null : () async {
+                    onPressed: () async {
                       int? val = await showNumberDialog(
                           context,
                           "Select Controller Port",
@@ -236,7 +236,7 @@ class _ModelDisplayState extends State<ModelDisplay> {
                     child: Align(                      
                       alignment: Alignment.centerLeft,
                       child: Text(widget.model['ControllerConnection'] == null||
-                      widget.model['ControllerConnection']['Port'] == null ? '':widget.model['ControllerConnection']?['Port'].toString() ?? '',
+                      widget.model['ControllerConnection']['Port'] == null ? '0':widget.model['ControllerConnection']?['Port'].toString() ?? '0',
                           style: TextStyle(fontSize: 20.0),
                           textAlign: TextAlign.right),
                     ),
@@ -256,7 +256,7 @@ class _ModelDisplayState extends State<ModelDisplay> {
             children: [
               _buildDecoratedText('Model Chain', styles.resultsGrid),
               _buildDecoratedText(widget.model['ModelChain'] ?? "Beginning", styles.resultsGrid),
-              Expanded(
+              /*Expanded(
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Colors.black),
@@ -303,7 +303,7 @@ class _ModelDisplayState extends State<ModelDisplay> {
                     ),
                   ),
                 ),
-              ), 
+              ), */
             ],
           ),
           Row(
