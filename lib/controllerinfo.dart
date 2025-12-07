@@ -15,7 +15,7 @@ bool openDisabled() => controller.type != 'Ethernet';
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ControllerInfo ${controller.name}'),
+        title: Text('Controller: ${controller.name}'),
       ),
       body: 
      SingleChildScrollView(
