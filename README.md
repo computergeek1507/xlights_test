@@ -16,7 +16,7 @@ Built with [Flutter](https://flutter.dev/), so it runs on Android, Windows, and 
 
 - [Flutter SDK](https://docs.flutter.dev/get-started/install) (Dart SDK `^3.5.3`).
 - A running copy of the **xLights desktop app** (2023.06 or newer) with its **HTTP API enabled**.
-  - In xLights, enable the API under `Tools → xLights Scheduler / REST API` (the app listens on port `49913` by default).
+  - In xLights, enable the API under `Preferences → Output` via the **xFade/xSchedule** dropdown. **Port A** is `49913` by default.
 - The device running this app must be able to reach the xLights machine over the network.
 
 ## Getting Started
