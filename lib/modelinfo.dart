@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:xlights_test/models.dart';
 import 'package:xlights_test/startscreen.dart';
 import 'package:xlights_test/xlightsserver.dart';
 
@@ -47,8 +46,7 @@ class _ModelInfoScreenState extends State<ModelInfoScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: (){
-             Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ModelsScreen()));
+             Navigator.pop(context);
           },
         ),
         actions: [
