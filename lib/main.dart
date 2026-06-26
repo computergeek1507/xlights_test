@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xlights_test/startscreen.dart';
 import 'package:xlights_test/settings.dart';
+import 'package:xlights_test/theme.dart';
 
 
 void main() {
@@ -8,6 +9,7 @@ void main() {
     MaterialApp(
       title: 'xLights Remote',
       debugShowCheckedModeBanner: false,
+      theme: AppTheme.light,
       // Start the app with the "/" named route. In this case, the app starts
       // on the FirstScreen widget.
       initialRoute: '/',

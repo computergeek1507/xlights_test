@@ -139,6 +139,7 @@ await Printing.layoutPdf(onLayout: (_) => newpdf.save());
           } else {
             final ports = snapshot.data!;
             return ListView(
+              padding: const EdgeInsets.symmetric(vertical: 12),
               children: [
                 _buildPortList('Pixel Ports', ports.pixelports),
                 _buildPortList('Serial Ports', ports.serialports),
@@ -153,34 +154,49 @@ await Printing.layoutPdf(onLayout: (_) => newpdf.save());
   }
 
   Widget _buildPortList(String title, List<Port>? ports) {
-    if (ports == null || ports.isEmpty) return SizedBox.shrink();
+    if (ports == null || ports.isEmpty) return const SizedBox.shrink();
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+          child: Text(title,
+              style:
+                  const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         ),
-        ...ports.map((port) => _buildPortItem(port)),
+        Card(
+          child: Column(
+            children: [
+              for (int i = 0; i < ports.length; i++)
+                _buildPortItem(ports[i], isLast: i == ports.length - 1),
+            ],
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildPortItem(Port port) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text('Port ${port.port}:', style: TextStyle(fontWeight: FontWeight.bold)),
-        ),
-        if (port.models != null)
-          ...?port.models?.map((model) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 4.0),
-            child: Text('${model.name} ${model.smartremote ==null? '' : 'SR:' + String.fromCharCode(int.parse(model.smartremote!))}'),
-          )),
-        Divider(),
-      ],
+  Widget _buildPortItem(Port port, {bool isLast = false}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      decoration: isLast
+          ? null
+          : const BoxDecoration(
+              border: Border(bottom: BorderSide(color: Color(0xFFE0E0E0))),
+            ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Port ${port.port}',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          if (port.models != null)
+            ...?port.models?.map((model) => Padding(
+                  padding: const EdgeInsets.only(left: 16.0, top: 4.0),
+                  child: Text(
+                      '${model.name} ${model.smartremote == null ? '' : 'SR:' + String.fromCharCode(int.parse(model.smartremote!))}'),
+                )),
+        ],
+      ),
     );
   }
 }

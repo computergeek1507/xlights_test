@@ -5,105 +5,46 @@ class ModelGroupDisplay extends StatelessWidget {
 
   const ModelGroupDisplay({Key? key, required this.model}) : super(key: key);
 
-  Widget renderSeparator(BuildContext context, int index) {
-    return Container(
-      height: 0.5,
-      color: Colors.black,
-    );
-  }
-
-  Widget renderModel(BuildContext context, int index, String item) {
-    return _buildDecoratedText(item, styles.resultsGrid);
-  }
-
   @override
   Widget build(BuildContext context) {
+    final models = (model['models'] as String?)
+            ?.split(',')
+            .where((m) => m.trim().isNotEmpty)
+            .toList() ??
+        [];
     return SingleChildScrollView(
-        physics: ScrollPhysics(),
-        scrollDirection: Axis.vertical,
+      physics: const ScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      padding: const EdgeInsets.symmetric(vertical: 12),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(color: Colors.black, width: 1),
-                right: BorderSide(color: Colors.black, width: 1),
-                top: BorderSide(color: Colors.black, width: 1),
-                bottom: BorderSide(color: Colors.black, width: 0.5),
-              ),
-            ),
-            child: Row(
+          Card(
+            child: Column(
               children: [
-                _buildDecoratedText('Name', styles.resultsGrid),
-                _buildDecoratedText(model['name'],styles.resultsGrid),
+                _buildInfoRow('Name', model['name']?.toString()),
+                _buildInfoRow('Layout Group', model['LayoutGroup']?.toString()),
+                _buildInfoRow('Layout', model['layout']?.toString(),
+                    isLast: true),
               ],
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(color: Colors.black, width: 1),
-                right: BorderSide(color: Colors.black, width: 1),
-                top: BorderSide(color: Colors.black, width: 0.5),
-                bottom: BorderSide(color: Colors.black, width: 0.5),
-              ),
-            ),
-            child: Row(
-              children: [
-                _buildDecoratedText('LayoutGroup', styles.resultsGrid),
-                _buildDecoratedText(model['LayoutGroup'], styles.resultsGrid),
-              ],
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              'Models',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(color: Colors.black, width: 1),
-                right: BorderSide(color: Colors.black, width: 1),
-                top: BorderSide(color: Colors.black, width: 0.5),
-                bottom: BorderSide(color: Colors.black, width: 0.5),
-              ),
-            ),
-            child: Row(
+          const SizedBox(height: 4),
+          Card(
+            child: Column(
               children: [
-                _buildDecoratedText('Layout',  styles.resultsGrid),
-                _buildDecoratedText(model['layout'], styles.resultsGrid),
+                for (int i = 0; i < models.length; i++)
+                  _buildInfoRow(null, models[i].trim(),
+                      isLast: i == models.length - 1),
               ],
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(color: Colors.black, width: 1),
-                right: BorderSide(color: Colors.black, width: 1),
-                top: BorderSide(color: Colors.black, width: 0.5),
-                bottom: BorderSide(color: Colors.black, width: 3),
-              ),
-            ),
-            child: Row(
-              children: [
-                _buildDecoratedText('Models',  styles.resultsGrid),
-              ],
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(color: Colors.black, width: 1),
-                right: BorderSide(color: Colors.black, width: 1),
-                top: BorderSide(color: Colors.black, width: 0.5),
-                bottom: BorderSide(color: Colors.black, width: 1),
-              ),
-            ),
-            child: Expanded(
-              child: ListView.separated(
-                //scrollDirection: Axis.vertical,
-                //physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                shrinkWrap: true,
-                itemCount: model['models'].split(',').length,
-                separatorBuilder: renderSeparator,
-                itemBuilder: (context, index) => renderModel(context, index, model['models'].split(',')[index]),
-              ),
             ),
           ),
         ],
@@ -112,24 +53,29 @@ class ModelGroupDisplay extends StatelessWidget {
   }
 }
 
-Widget _buildDecoratedText(String text, TextStyle style) => Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(width: 1, color: Colors.black),
-          //borderRadius: const BorderRadius.all(Radius.circular(2)),
-        ),
-        padding: const EdgeInsets.all(8.0),
-        //margin: const EdgeInsets.all(4),
-        child: Text(text, style: style),
-      ),
-    );
-
-
-class styles {
-  static const TextStyle resultsGrid = TextStyle(
-    fontSize: 20,
-    letterSpacing: 1.0,
-    //padding: EdgeInsets.all(10),
+Widget _buildInfoRow(String? label, String? value, {bool isLast = false}) {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    decoration: isLast
+        ? null
+        : const BoxDecoration(
+            border: Border(bottom: BorderSide(color: Color(0xFFE0E0E0))),
+          ),
+    child: label == null
+        ? Text(value ?? '', style: const TextStyle(fontSize: 16))
+        : Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Text(label,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w600)),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(value ?? '', style: const TextStyle(fontSize: 16)),
+              ),
+            ],
+          ),
   );
 }
-

@@ -59,10 +59,8 @@ class _ModelInfoScreenState extends State<ModelInfoScreen> {
           ),
         ],
       ),
-      body: Container(
-        child: Container(
-          padding: EdgeInsets.all(10),
-          //color: Color(0xFFE8EAF6),
+      body: Padding(
+        padding: const EdgeInsets.all(10),
         child: Center(
           // FutureBuilder
           child: FutureBuilder<Map<String, dynamic> >(
@@ -83,48 +81,9 @@ class _ModelInfoScreenState extends State<ModelInfoScreen> {
               }
             },
           ),
-          ),
         ),
       ),
     );
   }
-}
-
-class Styles {
-  static final ButtonStyle button = ElevatedButton.styleFrom(
-    foregroundColor: Colors.white, backgroundColor: Color(0xFFA40000),
-    textStyle: TextStyle(fontWeight: FontWeight.bold),
-  );
-
-  static final ButtonStyle buttonDisabled = ElevatedButton.styleFrom(
-    foregroundColor: Colors.white, backgroundColor: Color(0xFFA40000), disabledForegroundColor: Colors.white.withOpacity(0.4).withOpacity(0.38), disabledBackgroundColor: Colors.white.withOpacity(0.4).withOpacity(0.12),
-    textStyle: TextStyle(fontWeight: FontWeight.bold),
-  );
-
-  static const TextStyle buttonText = TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.bold,
-  );
-
-  static const TextStyle headerButton = TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.bold,
-  );
-
-  static final BoxDecoration resultsGrid = BoxDecoration(
-    border: Border.all(color: Colors.black),
-  );
-
-  static final BoxDecoration resultsRow = BoxDecoration(
-    border: Border(bottom: BorderSide(color: Colors.black)),
-  );
-
-  static final BoxDecoration resultsLabelContainer = BoxDecoration(
-    border: Border(right: BorderSide(color: Colors.black)),
-  );
-
-  static const TextStyle resultsLabelText = TextStyle(
-    fontSize: 14,
-  );
 }
 

@@ -114,8 +114,10 @@ class _StartScreenState extends State<StartScreen> {
         String itemsubTitle =
             "${controller.address!} ${controller.vendor!} ${controller.model!} Active: ${controller.active!}";
         return ListTile(
+          leading: const Icon(Icons.developer_board),
           title: Text(itemTitle),
           subtitle: Text(itemsubTitle),
+          trailing: const Icon(Icons.chevron_right),
           onTap: () {
             Navigator.push(
                 context,
@@ -136,7 +138,9 @@ class _StartScreenState extends State<StartScreen> {
       itemBuilder: (context, index) {
         final modelName = models[index];
         return ListTile(
+          leading: const Icon(Icons.lightbulb),
           title: Text(modelName),
+          trailing: const Icon(Icons.chevron_right),
           onTap: () {
             Navigator.push(
                 context,

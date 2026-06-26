@@ -37,49 +37,94 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Settings'),
         leading: IconButton(
-          icon: Icon(Icons.check),
+          icon: const Icon(Icons.arrow_back),
+          tooltip: 'Cancel',
           onPressed: () {
-            _storeData('ip', iptc.text);
-            _storeData('port', porttc.text);
             Navigator.pushReplacementNamed(context, '/');
           },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.save_outlined),
+            tooltip: 'Save',
             onPressed: () {
+              _storeData('ip', iptc.text);
+              _storeData('port', porttc.text);
               Navigator.pushReplacementNamed(context, '/');
             },
           ),
         ],
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.lan_outlined, size: 28),
+                SizedBox(width: 8),
+                Text(
+                  'xLights Connection',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
             Text(
-              'xLight Connection Settings',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              'Enter the IP address and port of your xLights instance.',
+              style: TextStyle(color: Colors.grey[600]),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'IP',
-                border: OutlineInputBorder(),
+            const SizedBox(height: 24),
+            Card(
+              elevation: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    TextField(
+                      decoration: const InputDecoration(
+                        labelText: 'IP Address',
+                        hintText: '127.0.0.1',
+                        prefixIcon: Icon(Icons.router_outlined),
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.number,
+                      style: const TextStyle(fontSize: 24),
+                      controller: iptc,
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      decoration: const InputDecoration(
+                        labelText: 'Port',
+                        hintText: '49913',
+                        prefixIcon: Icon(Icons.settings_ethernet),
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.number,
+                      style: const TextStyle(fontSize: 24),
+                      controller: porttc,
+                    ),
+                  ],
+                ),
               ),
-              style: TextStyle(fontSize: 28),
-              controller: iptc,
             ),
-            SizedBox(height: 20),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Port',
-                border: OutlineInputBorder(),
+            const SizedBox(height: 24),
+            FilledButton.icon(
+              onPressed: () {
+                _storeData('ip', iptc.text);
+                _storeData('port', porttc.text);
+                Navigator.pushReplacementNamed(context, '/');
+              },
+              icon: const Icon(Icons.save_outlined),
+              label: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 12.0),
+                child: Text('Save', style: TextStyle(fontSize: 18)),
               ),
-              style: TextStyle(fontSize: 28),
-              controller: porttc,
             ),
           ],
         ),
