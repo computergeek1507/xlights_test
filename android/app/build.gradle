@@ -12,7 +12,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.xlights_test"
+    namespace = "com.sandbdesigns.xlights_remote"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 

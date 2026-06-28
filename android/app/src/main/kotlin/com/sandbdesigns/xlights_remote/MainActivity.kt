@@ -1,4 +1,4 @@
-package com.example.xlights_test
+package com.sandbdesigns.xlights_remote
 
 import io.flutter.embedding.android.FlutterActivity
 
